@@ -1,0 +1,18 @@
+infra:
+  # TODO: Alinhar com Python/Node.js para 1.14.9 quando o módulo
+  # github.com/DanHenrique/terraform-aws-dynamodb publicar uma versão com required_version flexível.
+  terraform-version: "1.14.9"
+  working-path: terraform-aws
+
+environments:
+  dev:
+    # TODO: ARN da role OIDC do GitHub para o ambiente dev
+    role-arn: arn:aws:iam::000000000000:role/CHANGE_ME-dev-role
+  prod:
+    # TODO: ARN da role OIDC do GitHub para o ambiente prod
+    role-arn: arn:aws:iam::000000000000:role/CHANGE_ME-prod-role
+
+  # TODO: liste arquivos que precisam de substituição de tokens (replace-tokens action).
+  # Para repos de infra pura raramente é necessário — deixe comentado se não usar.
+  # files-to-replace:
+  #   - terraform-aws/<arquivo-com-tokens>.tf

@@ -1,0 +1,20 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - "terraform-aws/**"
+      - ".github/**"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  cd:
+    name: Deploy Infra
+    uses: SthoreH/shd-github-actions-workflows/.github/workflows/cd-infra-terraform.yml@v1.6.0
+    with:
+      environment: dev
+    secrets: inherit
