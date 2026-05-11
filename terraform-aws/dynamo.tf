@@ -1,6 +1,6 @@
 
 
-module "table" {
+module "dynamodb_table" {
   source = "github.com/DanHenrique/terraform-aws-dynamodb?ref=v1.2.3"
 
   table_name = local.table_name
