@@ -1,5 +1,5 @@
 locals {
-  table_name = "table_name" # TODO: change to desired table name
+  table_name = "products_table"
 
   template_variables = {
     account_id  = data.aws_caller_identity.current.account_id
@@ -9,6 +9,6 @@ locals {
 
   tags = {
     ManagedBy  = "terraform"
-    Repository = "github.com/SthoreH/infra-aws-ddb-table_name" # TODO: change to your repository
+    Repository = "github.com/SthoreH/infra-aws-ddb-products"
   }
 }
