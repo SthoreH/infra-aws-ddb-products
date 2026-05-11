@@ -1,29 +1,29 @@
 
 
-module "dynamodb_table" { # TODO: change module name if you want to create multiple tables in the same stack
+module "table" {
   source = "github.com/DanHenrique/terraform-aws-dynamodb?ref=v1.2.3"
 
   table_name = local.table_name
-  hash_key   = "PK" # TODO: change to desired hash key
-  range_key  = "SK" # TODO: change to desired range key
+  hash_key   = "PK"
+  range_key  = "SK"
 
-  billing_mode                = "PAY_PER_REQUEST" # TODO: change to PROVISIONED if you want to specify read/write capacity units
+  billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = var.deletion_protection_enabled
 
-  attributes = [ # TODO: change to desired attributes based on your access patterns
+  attributes = [
     { name = "PK", type = "S" },
     { name = "SK", type = "S" },
     { name = "GSI1PK", type = "S" },
     { name = "GSI1SK", type = "S" },
     { name = "GSI2PK", type = "S" },
     { name = "GSI2SK", type = "S" },
-    { name = "entityType", type = "S" },
-    { name = "createdAt", type = "S" },
+    { name = "slug", type = "S" },
+    { name = "entity", type = "S" },
   ]
 
-  ttl_attribute = "expiresAt" # TODO: change to desired TTL attribute or set to null if not using TTL
+  ttl_attribute = "expiresAt"
 
-  global_secondary_indexes = [ # TODO: change to desired GSIs based on your access patterns
+  global_secondary_indexes = [
     {
       name            = "GSI1"
       hash_key        = "GSI1PK"
@@ -38,8 +38,8 @@ module "dynamodb_table" { # TODO: change module name if you want to create multi
     },
     {
       name            = "GSI3"
-      hash_key        = "entityType"
-      range_key       = "createdAt"
+      hash_key        = "slug"
+      range_key       = "entity"
       projection_type = "ALL"
     },
   ]
