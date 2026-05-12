@@ -1,48 +1,96 @@
+resource "aws_dynamodb_table" "this" {
 
+  # ── Identificação ─────────────────────────────────────────────────────────────
+  name         = local.table_name
+  billing_mode = "PAY_PER_REQUEST"
 
-module "dynamodb_table" {
-  source = "github.com/DanHenrique/terraform-aws-dynamodb?ref=v1.2.3"
+  # ── Chave primária ────────────────────────────────────────────────────────────
+  hash_key  = "PK"
+  range_key = "SK"
 
-  table_name = local.table_name
-  hash_key   = "PK"
-  range_key  = "SK"
-
-  billing_mode                = "PAY_PER_REQUEST"
+  # ── Proteção ──────────────────────────────────────────────────────────────────
   deletion_protection_enabled = var.deletion_protection_enabled
 
-  attributes = [
-    { name = "PK", type = "S" },
-    { name = "SK", type = "S" },
-    { name = "GSI1PK", type = "S" },
-    { name = "GSI1SK", type = "S" },
-    { name = "GSI2PK", type = "S" },
-    { name = "GSI2SK", type = "S" },
-    { name = "slug", type = "S" },
-    { name = "entity", type = "S" },
-  ]
+  # ── Atributos indexáveis ──────────────────────────────────────────────────────
+  attribute {
+    name = "PK"
+    type = "S"
+  }
+  attribute {
+    name = "SK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI1PK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI1SK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI2PK"
+    type = "S"
+  }
+  attribute {
+    name = "GSI2SK"
+    type = "S"
+  }
+  attribute {
+    name = "slug"
+    type = "S"
+  }
+  attribute {
+    name = "entity"
+    type = "S"
+  }
 
-  ttl_attribute = "expiresAt"
+  # ── TTL ───────────────────────────────────────────────────────────────────────
+  ttl {
+    attribute_name = "expiresAt"
+    enabled        = true
+  }
 
-  global_secondary_indexes = [
-    {
-      name            = "GSI1"
-      hash_key        = "GSI1PK"
-      range_key       = "GSI1SK"
-      projection_type = "ALL"
-    },
-    {
-      name            = "GSI2"
-      hash_key        = "GSI2PK"
-      range_key       = "GSI2SK"
-      projection_type = "ALL"
-    },
-    {
-      name            = "GSI3"
-      hash_key        = "slug"
-      range_key       = "entity"
-      projection_type = "ALL"
-    },
-  ]
+  # ── Índices Globais Secundários ───────────────────────────────────────────────
+  global_secondary_index {
+    name            = "GSI1"
+    projection_type = "ALL"
+    key_schema {
+      attribute_name = "GSI1PK"
+      key_type       = "HASH"
+    }
+    key_schema {
+      attribute_name = "GSI1SK"
+      key_type       = "RANGE"
+    }
+  }
 
+  global_secondary_index {
+    name            = "GSI2"
+    projection_type = "ALL"
+    key_schema {
+      attribute_name = "GSI2PK"
+      key_type       = "HASH"
+    }
+    key_schema {
+      attribute_name = "GSI2SK"
+      key_type       = "RANGE"
+    }
+  }
+
+  global_secondary_index {
+    name            = "GSI3"
+    projection_type = "ALL"
+    key_schema {
+      attribute_name = "slug"
+      key_type       = "HASH"
+    }
+    key_schema {
+      attribute_name = "entity"
+      key_type       = "RANGE"
+    }
+  }
+
+  # ── Tags ──────────────────────────────────────────────────────────────────────
   tags = local.tags
 }
