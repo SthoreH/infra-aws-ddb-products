@@ -11,7 +11,7 @@ variable "environment" {
 variable "organization" {
   description = "GitHub organization name, used in resource tags"
   type        = string
-  default     = "sthoreh"
+  default     = "SthoreH"
 }
 
 variable "deletion_protection_enabled" {
